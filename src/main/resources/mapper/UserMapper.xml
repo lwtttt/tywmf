@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.four.mapper.UserMapper">
+
+<!--    List<User> getUserByCondition(User user);-->
+    <select id="getUserByCondition" resultType="com.four.entity.User">
+        select * from tywmf_user where 1=1
+        <if test="nativePlace != null and nativePlace != ''">
+            and nativePlace like concat ('%',#{nativePlace},'%')
+        </if>
+        <if test="height != null and height != ''">
+            and height > #{height}
+        </if>
+        <if test="income != null and income != ''">
+            and income > #{income}
+        </if>
+        <if test="age != null">
+            and birthday like concat ('%',#{age},'%')
+        </if>
+
+    </select>
+
+<!--    void updateUser(User user);-->
+    <update id="updateUser">
+        update tywmf_user
+        <trim prefix="set" suffixOverrides=",">
+            <if test="userName!=null and userName!=''">
+                userName = #{userName},
+            </if>
+            <if test="gender!=null and gender!=''">
+                gender = #{gender},
+            </if>
+            <if test="maritalStatus!=null and maritalStatus!=''">
+                maritalStatus = #{maritalStatus},
+            </if>
+            <if test="education!=null and education!=''">
+                education = #{education},
+            </if>
+            <if test="height!=null and height!=''">
+                height = #{height},
+            </if>
+            <if test="workplace!=null and workplace!=''">
+                workplace = #{workplace},
+            </if>
+            <if test="income!=null and income!=''">
+                income = #{income},
+            </if>
+            <if test="nativePlace!=null and nativePlace!=''">
+                nativePlace = #{nativePlace},
+            </if>
+            <if test="weight!=null and weight!=''">
+                weight = #{weight},
+            </if>
+            <if test="jobClass!=null and jobClass!=''">
+                jobClass = #{jobClass},
+            </if>
+            <if test="house!=null and house!=''">
+                house = #{house},
+            </if>
+            <if test="house!=null and house!=''">
+                house = #{house},
+            </if>
+            <if test="car!=null and car!=''">
+                car = #{car},
+            </if>
+            <if test="smoke!=null and smoke!=''">
+                smoke = #{smoke},
+            </if>
+            <if test="drink!=null and drink!=''">
+                drink = #{drink},
+            </if>
+            <if test="idPic!=null and idPic!=''">
+                idPic = #{idPic},
+            </if>
+            <if test="nation!=null and nation!=''">
+                nation = #{nation},
+            </if>
+            <if test="conduction!=null and conduction!=''">
+                conduction = #{conduction},
+            </if>
+        </trim>
+        where userId = #{userId}
+    </update>
+
+    <!--用户登录注册-->
+    <select id="getLoginUser" parameterType="String"
+            resultType="User">
+		select * from tywmf_user where userName=#{userName}
+	</select>
+
+
+    <!-- 注册用户 -->
+    <insert id="registerAdd" parameterType="com.four.entity.User">
+		insert into tywmf_user (userName,password,gender,roleCode,maritalStatus,workplace,height,education)
+		values(#{userName},#{password},#{gender},#{roleCode},#{maritalStatus},#{workplace},#{height},#{education})
+	</insert>
+
+</mapper>

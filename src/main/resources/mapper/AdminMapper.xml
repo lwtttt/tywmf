@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.four.mapper.AdminMapper">
+      <!--管理员查看举报信息-->
+        <select id="listReport"  resultType="com.four.entity.Report">
+            select  * from tywmf_report where 1=1
+            <if test="reportStatus!=null and reportStatus!=''">
+                 and reportStatus =#{reportStatus}
+            </if>
+            <if test="userName!=null and userName!=''">
+                and reporterUserName like concat("%",#{userName},"%")
+            </if>
+             order by reportDate DESC limit #{currentPageNo},#{pageSize}
+        </select>
+
+
+        <select id= "getReportCount" resultType="int">
+            select count(1) as count from tywmf_report where 1=1
+            <if test="userName!=null and userName!=''">
+                and  reporterUserName like concat("%",#{userName},"%")
+            </if>
+            <if test="reportStatus!=null and reportStatus!=''">
+                and reportStatus=#{reportStatus}
+            </if>
+        </select>
+
+        <!--<insert id="add" parameterType="User">
+            insert into smbms_user (userCode,userName,userPassword,userRole, gender,birthday,phone,address,creationDate,createdBy,picUrl,idPic)
+            values(#{userCode},#{userName},#{userPassword},#{userRole},#{gender},#{birthday},#{phone},#{address},#{creationDate},#{createdBy},#{picUrl},#{idPic})
+        </insert>
+
+        <delete id="deleteUserById" >
+            delete from smbms_user where id=#{delId}
+        </delete>
+
+        <select id= "getUserById" resultType="User">
+            select u.*,r.roleName as userRoleName from smbms_user u,smbms_role r where u.id=#{id} and u.userRole = r.id
+        </select>-->
+
+        <update id="updateReport">
+            update tywmf_report set reportStatus=#{reportStatus} ,reportReply=#{reportReply} where reportId=#{reportId}
+        </update>
+
+         <update id="banAccountStatus">
+            update tywmf_user set accountStatus=0  where userId=#{userId}
+        </update>
+
+
+
+        <update id="liftAccountStatus">
+            update tywmf_user set accountStatus=1  where userId=#{userId}
+        </update>
+
+        <delete id="deleteReportById" >
+            delete from tywmf_report where reportId=#{reportId}
+        </delete>
+
+        <!--<select id="getRoleList"  resultType="com.four.entity.Role">
+	    SELECT * FROM tywmf_role
+        </select>-->
+
+    <select id= "getReportById" resultType="com.four.entity.Report">
+            select * from  tywmf_report where reportId=#{reportId}
+        </select>
+
+
+    <select id="getStatusList"  resultType="com.four.entity.Report">
+          select  * from tywmf_report
+             GROUP BY reportStatus
+           </select>
+
+
+    <!--管理员查看用户信息-->
+    <select id="getUserList"  resultType="com.four.entity.User">
+        select  * from tywmf_user where 1=1
+        <if test="accountStatus>-1">
+            and accountStatus =#{accountStatus}
+        </if>
+        <if test="userName!=null and userName!=''">
+            and userName like concat("%",#{userName},"%")
+        </if>
+        order by userName ASC limit #{currentPageNo},#{pageSize}
+    </select>
+
+
+    <select id= "getUserCount" resultType="int">
+        select count(1) as count from tywmf_user where 1=1
+        <if test="userName!=null and userName!=''">
+            and  userName like concat("%",#{userName},"%")
+        </if>
+        <if test="accountStatus>-1">
+            and accountStatus=#{accountStatus}
+        </if>
+    </select>
+
+         <select id="getAccountStatusList"  resultType="com.four.entity.User">
+          select  * from tywmf_user
+             GROUP BY accountStatus
+           </select>
+
+
+
+    <select id= "getUserById" resultType="com.four.entity.User">
+            select * from  tywmf_user where userId=#{userId}
+        </select>
+
+    <delete id="deleteUserById" >
+            delete from tywmf_user where userId=#{userId}
+        </delete>
+
+
+
+</mapper>

@@ -1,0 +1,23 @@
+package com.four.service;
+
+import com.four.entity.heat;
+
+import java.util.List;
+
+public interface GreetService {
+        /*
+         * 添加打招呼信息
+         *
+         * */
+        public int insertGreet(String userName, String greetByWho, String greetStatus);
+        
+        /**
+         * 查询谁关注了我
+         */
+        public List<heat> queryFocus(String focusUserName);
+
+        /**
+         * 查询我关注了谁
+         */
+        public List<heat> myFocus(String userName);
+}
